@@ -1,3 +1,21 @@
+*{
+    transition: 0.5s;
+}
+@font-face {
+    font-family: 'DigitalDisplay';
+    src: url("./fonts/digital_display.ttf")
+    format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Orbitron';
+    src: url("./fonts/Orbitron-VariableFont_wght.ttf")
+    format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -48,4 +66,154 @@ h1:focus {
 
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
+}
+
+.microwave-full {
+    border: 2px solid black;
+    padding: 20px;
+    margin: auto;
+    text-align: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100vw;
+}
+
+.microwave-box, .glassdoor {
+    border: 2px solid black;
+    padding: 20px;
+    width: 300px;
+    margin: auto;
+    text-align: center;
+    background-color: #ddd;
+    border-radius: 10px;
+}
+.glassdoor{
+    display: flex;
+    overflow: hidden;
+}
+.img-glass{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.img-ofusced{
+    opacity: .3;
+}
+
+.img-active{
+    opacity: 1;
+}
+
+.tiny5-regular, .timer {
+
+    font-family: "Orbitron", "DigitalDisplay", sans-serif;
+    font-size: 48px;
+    font-weight: normal;
+    font-style: normal;
+}
+
+.timer-display {
+    font-family: "Orbitron","DigitalDisplay", "Tiny5", sans-serif;
+    font-size: 48px;
+}
+
+.timer{
+    padding: 20px;
+    font-size: 2em;
+    background-color: #050505;
+    color: #26b050;
+}
+.panel, .keypad, .functions, .door {
+    margin-top: 10px;
+}
+
+.door-animation {
+
+}
+
+.keypad, .functions, .more-time {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.btn-program {
+    padding: 10px;
+    font-size: 0.8em;
+    height: 60px;
+    width: 80px;
+    background-color: #70404A;
+    color: #DABEC4;
+    border: 1px;
+    border-radius: 10px 05px;
+    cursor: pointer;
+}
+
+.btn-program:hover{
+    background-color: #855556;
+    color: #ffffaa;
+}
+
+.btn-more-time, .btn-start, .btn-stop {
+    padding: 5px;
+    font-size: 1.2em;
+    border: 1px;
+    border-radius: 10px 05px;
+    cursor: pointer;
+}
+
+.btn-more-time, .btn-start {
+    background-color: #E3341F;
+    color: #DABEC4;
+}
+.btn-more-time:hover, .btn-start:hover {
+    background-color: rgba(227, 52, 31, 0.5);
+    color: #ffffff;
+}
+
+.btn-stop {
+    font-size: 0.8em;
+    background-color: rgba(218, 190, 196, 1);
+    color: #E3341F;
+    border: 2px solid #E3341F ;
+}
+
+.btn-stop:hover{
+    background-color: rgba(218, 190, 196, 0.5);
+    color: #E3341F;
+    border: 2px solid #E3341F ;
+}
+.btn {
+    padding: 10px;
+    font-size: 1em;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.door {
+    border: 1px solid #999;
+    padding: 10px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+}
+
+.glassdoor {
+    background-color:  rgba(152,152,152, 0.8);
+    width: 75%;
+    height: 75vh;
+}
+.microwave-animation {
+    width: 100%;
+    height: auto;
 }

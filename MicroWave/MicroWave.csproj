@@ -6,4 +6,15 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Content Remove="Components\Pages\Weather.razor" />
+      <Content Remove="Components\Pages\Home.razor" />
+      <Content Remove="Components\Pages\Error.razor" />
+      <Content Remove="Components\Pages\Counter.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Components\Pages\" />
+    </ItemGroup>
+
 </Project>

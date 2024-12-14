@@ -1,0 +1,165 @@
+﻿@page "/"
+@using System.Net.Mime
+@using Microsoft.VisualBasic
+@rendermode InteractiveServer
+
+@* Aqui vamos encapsular toda a estrutura dentro de uma caixa *@
+
+<div class="microwave-full">
+<div class="microwave-box">
+    <!-- Painel de Timer e Potência -->
+    <div class="panel timer">
+        <p>Timer:</p>
+        <p class="timer-display" >@hourAtMinuts</p>
+        <p>Potência: @powerLevel</p>
+    </div>
+
+    <!-- Teclas numéricas -->
+    <div class="keypad">
+        @for (int i = 1; i <= 9; i++)
+        {
+            int current = i;
+            <button class="btn" @onclick="() => AddNumber(current)">@current</button>
+        }
+        <button class="btn-stop" @onclick="StopClear">Parar Cancelar</button>
+        <button class="btn" @onclick="() => AddNumber(0)">0</button>
+        <button class="btn-start" @onclick="StartCooking">Iniciar</button>
+    </div>
+
+    <!-- Teclas de funções predefinidas -->
+    <div class="functions">
+        <button class="btn-program" @onclick="SelectRice">Arroz</button>
+        <button class="btn-program" @onclick="SelectMincedMeat">Carne Moida</button>
+        <button class="btn-program" @onclick="SelectVegetables">Legumes</button>
+        <button class="btn-program" @onclick="SelectMeat">Carnes</button>
+        <button class="btn-program" @onclick="SelectMeat">Peixes</button>
+        <button class="btn-program" @onclick="SelectDefrost">Descongelar</button>
+        <button class="btn-program" @onclick="SelectPopcorn">Pipoca</button>
+        <button class="btn-program">Brigadeiro</button>
+        <button class="btn-program">Meu Jeito</button>
+        <button class="btn-more-time" @onclick="MoreTime300">+5 min</button>
+        <button class="btn-more-time" @onclick="MoreTime60">+1 min</button>
+        <button class="btn-more-time" @onclick="MoreTime30">+30 seg</button>
+    </div>
+
+    <!-- Porta do micro-ondas com animação -->
+    <div class="door">
+        <img src="microwave.gif" alt="Animacao do Micro-ondas" class="microwave-animation" style="display:@(isCooking ? "block" : "none");" />
+        <p>Porta do Micro-ondas</p>
+    </div>
+</div>
+<div class="door-animation">
+
+</div>   
+<div class="glassdoor">
+    <img class="@(isCooking?"img-active":"img-ofusced") img-glass" src="@imageGlassUrl" alt="@imageGlassAlt">
+</div>
+</div>
+
+@code {
+    private int timerDisplay = 0;
+    private string hourAtMinuts = "0:00";
+    private string imageGlassUrl = "./img/istockphoto-1076145414-1024x1024.jpg";
+    private string imageGlassAlt = "Imagem de um frango assado";
+    private int powerLevel = 100; // Potência padrão
+    private bool isCooking = false;
+    private bool isOnProcess = false;
+    private System.Timers.Timer timer;
+    private void AddNumber(int number)
+    {
+        if (isCooking){
+            
+        }else if (!isOnProcess) {
+            if (timerDisplay != 0)
+            {
+                timerDisplay *= 10;
+            }
+
+            SetTime( timerDisplay + number );
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        // Cria um timer que aciona a cada 1000 ms (1 segundo)
+        timer = new System.Timers.Timer(1000);
+        timer.Elapsed += OnTimerElapsed;
+        timer.AutoReset = true;
+        timer.Start();
+    }
+    private void OnTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+    {
+        if (isCooking && timerDisplay > 0)
+        {
+            timerDisplay--;
+            hourAtMinuts = timerDisplay / 60 + ":" + Strings.Right("0" + timerDisplay % 60, 2);
+            InvokeAsync(StateHasChanged); // Atualiza a interface no thread correto
+        }
+        else if (timerDisplay.Equals(0) ) {
+            if (isCooking){
+                isCooking = false;
+                StopClear();
+                InvokeAsync(StateHasChanged); // Atualiza a interface no thread correto
+            }
+        }
+    }
+
+    private void StopClear()
+    {
+        if (isCooking){
+            isCooking = false;
+        }else{
+            timerDisplay = 0;
+            powerLevel = 100;
+            hourAtMinuts = "0:00";
+            isOnProcess = false;
+        }
+    }
+
+    private void StartCooking()
+    {
+        int secondsTest = timerDisplay % 100;
+        if (!isOnProcess && secondsTest <= 60)
+        {
+            timerDisplay = ( ( (int) (timerDisplay - secondsTest) / 100 ) * 60 )  + secondsTest  ;
+        }
+            
+        isCooking = true;
+        isOnProcess = true;
+        // Lógica para iniciar o "cozimento" com timer e potência configurados
+    }
+
+    private void SelectRice() { timerDisplay = 90; powerLevel = 80; }
+    private void SelectVegetables() { timerDisplay = 180; powerLevel = 100; }
+    private void SelectPopcorn() { timerDisplay = 90; powerLevel = 80; }
+    private void SelectMeat() { timerDisplay = 180; powerLevel = 100; }
+    private void SelectMincedMeat() { timerDisplay = 180; powerLevel = 100; }
+    private void SelectDefrost() { timerDisplay = 120; powerLevel = 50; }
+    private void MoreTime300()
+    { MoreTime(300);}
+    private void MoreTime60()
+    { MoreTime(60); }
+    private void MoreTime30()
+    { MoreTime(30); }
+    private void MoreTime(int seconds)
+    {
+        bool isLastStatus = isCooking;
+        isCooking = false;
+        SetTime(timerDisplay + seconds);
+        isCooking = isLastStatus;
+
+    }
+    private void SetTime( int seconds){
+        if (seconds>=0 && seconds<=600){
+           timerDisplay = seconds;
+           if (!isOnProcess)
+           {
+               hourAtMinuts = timerDisplay / 100 + ":" + Strings.Right("0" + (timerDisplay % 100), 2); 
+           }
+           else
+           {
+               hourAtMinuts = timerDisplay / 60 + ":" + Strings.Right("0" + timerDisplay % 60, 2);
+           }
+        }
+    }
+}
