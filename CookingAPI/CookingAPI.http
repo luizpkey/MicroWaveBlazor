@@ -1,0 +1,6 @@
+@CookingAPI_HostAddress = http://localhost:5070
+
+GET {{CookingAPI_HostAddress}}/cooking/
+Accept: application/json
+
+###
